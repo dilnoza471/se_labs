@@ -15,6 +15,7 @@ let transcripts: Transcript[] = [];
 /**
  * Initializes the "database" with 4 demo students.
  * Each starts with an empty transcript.
+ * 
  */
 export function initialize(): void {
   addStudent("Sardor");
@@ -74,6 +75,36 @@ export function getStudentIDs(studentName: string): StudentID[] {
     .filter((t) => t.student.studentName === studentName)
     .map((t) => t.student.studentID);
 }
+/**
+ * Adds a grade to a student's transcript.
+ * @param studentId ID of the student
+ * @param courseGrade Course name and grade
+ * @returns true if grade added, false if student not found
+ */
+export function addGrade(studentId: StudentID, courseGrade: CourseGrade): boolean {
+  const transcript = transcripts.find(t => t.student.studentID === studentId);
+  if (!transcript) return false;
+
+  transcript.grades.push(courseGrade);
+  return true;
+}
+
+/**
+ * Updates an existing grade for a student.
+ * @param studentId Student ID
+ * @param courseName Course name
+ * @param newGrade New grade
+ * @returns true if updated, false if student or course not found
+ */
+export function updateGrade(studentId: StudentID, courseName: string, newGrade: number): boolean {
+    const transcript = transcripts.find(t => t.student.studentID === studentId);
+    if (!transcript) return false;
+    const course = transcript.grades.find(g => g.courseName === courseName);
+    if (!course) return false;
+    course.grade = newGrade;
+    return true;
+}
+
 
 /**
  * Deletes a student and their transcript by ID.

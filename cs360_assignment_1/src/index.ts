@@ -1,7 +1,7 @@
 /**
  * @fileOverview Transcript Manager REST API server.
  * Provides CRUD operations on students and their transcripts.
- * @author
+ * @author Dilnoza Eraliyeva 230029
  */
 
 import express, { Request, Response } from "express";
@@ -74,6 +74,44 @@ app.get("/studentids", (req: Request, res: Response) => {
 });
 
 /**
+ * POST /transcripts/:id/grades
+ * Body: { "courseName": string, "grade": number }
+ */
+app.post("/transcripts/:id/grades", (req: Request, res: Response) => {
+  const id = parseInt(req.params.id);
+  const { courseName, grade } = req.body;
+
+  if (!courseName || grade === undefined) {
+    return res.status(400).send({ error: "Missing courseName or grade" });
+  }
+
+  const success = db.addGrade(id, { courseName, grade });
+
+  if (!success) {
+    return res.status(404).send(`No student with id = ${id}`);
+  }
+
+  res.status(200).send({ studentId: id, courseName, grade });
+});
+
+app.post("/transcripts/:id/grades/update", (req, res) => {
+    const id = parseInt(req.params.id);
+    const { courseName, grade } = req.body;
+
+    if (!courseName || grade === undefined) {
+        return res.status(400).send({ error: "Missing courseName or grade" });
+    }
+
+    const success = db.updateGrade(id, courseName, grade);
+    if (!success) {
+        return res.status(404).send(`No student or course found for id = ${id}`);
+    }
+
+    res.status(200).send({ studentId: id, courseName, grade });
+});
+
+
+/**
  * DELETE /transcripts/:id
  * Deletes transcript (and student) with the given ID.
  * Returns 200 if deleted, 404 if not found.
@@ -91,18 +129,10 @@ app.delete("/transcripts/:id", (req: Request, res: Response) => {
 });
 
 /**
- * Catch-all for unknown GET requests
+ * Catch-all for all unknown requests
  */
-app.get("/:request*", (req: Request, res: Response) => {
-  console.log(defaultErrorMessage("GET", req.params["request*"]));
-  res.sendStatus(404);
-});
-
-/**
- * Catch-all for unknown POST requests
- */
-app.post("/:request*", (req: Request, res: Response) => {
-  console.log(defaultErrorMessage("POST", req.params["request*"]));
+app.all(/.*/, (req: Request, res: Response) => {
+  console.log(defaultErrorMessage(req.method, req.path));
   res.sendStatus(404);
 });
 
