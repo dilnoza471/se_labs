@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "build": "tsc --watch",
+        "build": "tsc ",
         "start": "node dist/index"
     },
     "dependencies": {
