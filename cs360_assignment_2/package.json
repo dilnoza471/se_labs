@@ -1,0 +1,10 @@
+{
+    "scripts": {
+        "build": "tsc --watch",
+        "start": "node dist/index"
+    },
+    "dependencies": {
+        "axios": "^1.12.2",
+        "typescript": "^5.9.2"
+    }
+}
