@@ -1,10 +1,22 @@
 {
-    "scripts": {
-        "build": "tsc ",
-        "start": "node dist/index"
-    },
-    "dependencies": {
-        "axios": "^1.12.2",
-        "typescript": "^5.9.2"
-    }
+  "name": "transcript-manager-client",
+  "version": "1.0.0",
+  "description": "Client for Transcript Manager API",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "axios": "^1.12.2",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0",
+    "vite": "^6.3.6"
+  }
 }
